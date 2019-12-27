@@ -1,3 +1,3 @@
-# WP FreeAgent API
+# FreeAgent API
 
-This is a simple WordPress library for using the FreeAgent API
+This is a simple PHP wrapper for using the FreeAgent API
