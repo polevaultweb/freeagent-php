@@ -1,0 +1,21 @@
+{
+  "name": "polevaultweb/freeagent-php",
+  "description": "PHP wrapper for the FreeAgent API",
+  "license": "GPL-3.0+",
+  "keywords": [
+    "client",
+    "api",
+    "freeagent"
+  ],
+  "authors": [
+    {
+      "name": "Iain Poulson",
+      "homepage": "https://polevaultweb.com/"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Polevaultweb\\FreeAgent\\": "src/"
+    }
+  }
+}
