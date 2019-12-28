@@ -12,6 +12,7 @@ class BankTransactionExplanation extends ApiResource {
 	use ApiOperations\Retrieve;
 	use ApiOperations\Create;
 	use ApiOperations\Update;
+	use ApiOperations\Delete;
 
 	public static function all( $bank_account, $params = array(), $opts = null ) {
 		$default = array(
