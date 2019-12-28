@@ -14,8 +14,10 @@ trait Create {
 	 */
 	public static function create($params = null, $options = null)
 	{
-		self::_validateParams($params);
+		self::_validateParams( $params );
 		$url = static::classUrl();
+
+		$params = array( self::OBJECT_NAME => $params );
 
 		list($response, $opts) = static::_staticRequest('post', $url, $params, $options);
 		$obj = \Polevaultweb\FreeAgent\Util\Util::convertToFreeAgentObject($response->json, $opts);
