@@ -223,7 +223,8 @@ class FreeAgentObject implements \ArrayAccess, \Countable, \JsonSerializable {
 		if ( $partial ) {
 			$removed = new Util\Set();
 		} else {
-			$removed = new Util\Set( array_diff( array_keys( $this->_values ), array_keys( $values ) ) );
+			$value_keys = empty( $this->_values ) ? array() : array_keys( $this->_values );
+			$removed = new Util\Set( array_diff( $value_keys, array_keys( $values ) ) );
 		}
 
 		foreach ( $removed->toArray() as $k ) {
@@ -250,10 +251,12 @@ class FreeAgentObject implements \ArrayAccess, \Countable, \JsonSerializable {
 			// This is necessary in case metadata is empty, as PHP arrays do
 			// not differentiate between lists and hashes, and we consider
 			// empty arrays to be lists.
-			if ( ( $k === "metadata" ) && ( is_array( $v ) ) ) {
-				$this->_values[ $k ] = FreeAgentObject::constructFrom( $v, $opts );
+			if ( is_array( $v ) ) {
+				$object = rtrim( $k, 's' );
+				$this->_values[ $k ] = Util\Util::convertToFreeAgentObject( $v, $opts, $object );
 			} else {
-				$this->_values[ $k ] = Util\Util::convertToFreeAgentObject( $v, $opts );
+				$object = isset($values['objects'] ) ? $values['objects'] : null;
+				$this->_values[ $k ] = Util\Util::convertToFreeAgentObject( $v, $opts, $object );
 			}
 			if ( $dirty ) {
 				$this->dirtyValue( $this->_values[ $k ] );

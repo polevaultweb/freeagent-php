@@ -79,7 +79,7 @@ class ApiRequestor
 		$headers = $headers ?: [];
 		list($rbody, $rcode, $rheaders, $myAccessToken) =
 			$this->_requestRaw($method, $url, $params, $headers);
-		$json = $this->_interpretResponse($rbody, $rcode, $rheaders);
+		$json = $this->_interpretResponse($method, $rbody, $rcode, $rheaders);
 		$resp = new ApiResponse($rbody, $rcode, $rheaders, $json);
 		return [$resp, $myAccessToken];
 	}
@@ -342,14 +342,16 @@ class ApiRequestor
 	 * @throws Exception\UnexpectedValueException
 	 * @throws Exception\ApiErrorException
 	 */
-	private function _interpretResponse($rbody, $rcode, $rheaders)
+	private function _interpretResponse($method, $rbody, $rcode, $rheaders)
 	{
-		$resp = json_decode($rbody, true);
-		$jsonError = json_last_error();
-		if ($resp === null && $jsonError !== JSON_ERROR_NONE) {
-			$msg = "Invalid response body from API: $rbody "
-			       . "(HTTP response code was $rcode, json_last_error() was $jsonError)";
-			throw new Exception\UnexpectedValueException($msg, $rcode, $rbody);
+		$resp = [];
+		if ( $method !== 'delete' ) {
+			$resp      = json_decode( $rbody, true );
+			$jsonError = json_last_error();
+			if ( $resp === null && $jsonError !== JSON_ERROR_NONE ) {
+				$msg = "Invalid response body from API: $rbody " . "(HTTP response code was $rcode, json_last_error() was $jsonError)";
+				throw new Exception\UnexpectedValueException( $msg, $rcode, $rbody );
+			}
 		}
 
 		if ($rcode < 200 || $rcode >= 300) {

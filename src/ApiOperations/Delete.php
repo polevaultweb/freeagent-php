@@ -12,7 +12,7 @@ trait Delete {
 	 *
 	 * @return static The deleted resource.
 	 */
-	public function delete($params = null, $opts = null)
+	public function delete($params = [], $opts = null)
 	{
 		self::_validateParams($params);
 

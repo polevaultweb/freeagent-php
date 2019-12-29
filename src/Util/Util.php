@@ -32,34 +32,39 @@ abstract class Util
     }
 
 	/**
-	 * Converts a response from the Stripe API to the corresponding PHP object.
+	 * Converts a response from the FreeAgent API to the corresponding PHP object.
 	 *
-	 * @param array $resp The response from the Stripe API.
+	 * @param array $resp The response from the FreeAgent API.
 	 * @param array $opts
 	 * @return FreeAgentObject|array
 	 */
-	public static function convertToFreeAgentObject($resp, $opts)
+	public static function convertToFreeAgentObject($resp, $opts, $object = null )
 	{
 		$types = [
 			// data structures
 			\Polevaultweb\FreeAgent\Collection::OBJECT_NAME => \Polevaultweb\FreeAgent\Collection::class,
 
 			// business objects
+			\Polevaultweb\FreeAgent\BankAccount::OBJECT_NAME => \Polevaultweb\FreeAgent\BankAccount::class,
 			\Polevaultweb\FreeAgent\BankTransaction::OBJECT_NAME => \Polevaultweb\FreeAgent\BankTransaction::class,
+			\Polevaultweb\FreeAgent\BankTransactionExplanation::OBJECT_NAME => \Polevaultweb\FreeAgent\BankTransactionExplanation::class,
 		];
 		if (self::isList($resp)) {
 			$mapped = [];
 			foreach ($resp as $i) {
-				array_push($mapped, self::convertToFreeAgentObject($i, $opts));
+				array_push($mapped, self::convertToFreeAgentObject($i, $opts, $object));
 			}
 			return $mapped;
 		} elseif (is_array($resp)) {
-			if (isset($resp['object']) && is_string($resp['object']) && isset($types[$resp['object']])) {
-				$class = $types[$resp['object']];
+			if ( isset( $resp['object'] ) && is_string( $resp['object'] ) && isset( $types[ $resp['object'] ] ) ) {
+				$class = $types[ $resp['object'] ];
+			} else if ( ! empty( $object ) ) {
+				$class = $types[ $object ];
 			} else {
 				$class = \Polevaultweb\FreeAgent\FreeAgentObject::class;
 			}
-			return $class::constructFrom($resp, $opts);
+
+			return $class::constructFrom( $resp, $opts );
 		} else {
 			return $resp;
 		}

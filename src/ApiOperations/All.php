@@ -25,6 +25,7 @@ trait All {
 
 		list($response, $opts) = static::_staticRequest('get', $url, $params, $opts);
 		$response->json['object'] = 'list';
+		$response->json['objects'] = static::OBJECT_NAME;
 		$obj = \Polevaultweb\FreeAgent\Util\Util::convertToFreeAgentObject($response->json, $opts);
 		if (!($obj instanceof \Polevaultweb\FreeAgent\Collection)) {
 			throw new \Polevaultweb\FreeAgent\Exception\UnexpectedValueException(
@@ -35,6 +36,7 @@ trait All {
 		$objectPlural = static::objectPlural();
 		$obj->data = $obj->{$objectPlural};
 		$obj->objectPlural = $objectPlural;
+		$obj->object = static::OBJECT_NAME;
 
 		$obj->setLastResponse($response);
 		$obj->setFilters($params);

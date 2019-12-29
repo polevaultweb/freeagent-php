@@ -67,6 +67,7 @@ class Collection extends FreeAgentObject implements \IteratorAggregate
 
         list($response, $opts) = $this->_staticRequest('get', $url, $params, $opts);
 	    $response->json['object'] = 'list';
+	    $response->json['objects'] = $this->object;
         $obj = Util\Util::convertToFreeAgentObject($response->json, $opts);
         if (!($obj instanceof Collection)) {
             throw new \Polevaultweb\FreeAgent\Exception\UnexpectedValueException(
@@ -75,6 +76,7 @@ class Collection extends FreeAgentObject implements \IteratorAggregate
         }
 	    $obj->data = $obj->{$this->objectPlural};
 	    $obj->objectPlural = $this->objectPlural;
+	    $obj->object = $this->object;
         $obj->setFilters($params);
 	    $obj->setLastResponse($response);
         return $obj;

@@ -18,7 +18,8 @@ abstract class ApiResource extends FreeAgentObject {
 	 */
 	public function instanceUrl()
 	{
-		return static::resourceUrl($this['id']);
+		$id = basename( $this['url'] );
+		return static::resourceUrl($id);
 	}
 
 	/**
