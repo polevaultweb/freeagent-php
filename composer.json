@@ -1,7 +1,7 @@
 {
   "name": "polevaultweb/freeagent-php",
   "description": "PHP wrapper for the FreeAgent API",
-  "license": "GPL-3.0+",
+  "license": "GPL-3.0-or-later",
   "keywords": [
     "client",
     "api",
