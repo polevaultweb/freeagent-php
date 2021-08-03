@@ -45,6 +45,7 @@ abstract class Util
 			\Polevaultweb\FreeAgent\Collection::OBJECT_NAME => \Polevaultweb\FreeAgent\Collection::class,
 
 			// business objects
+			\Polevaultweb\FreeAgent\Invoice::OBJECT_NAME => \Polevaultweb\FreeAgent\Invoice::class,
 			\Polevaultweb\FreeAgent\BankAccount::OBJECT_NAME => \Polevaultweb\FreeAgent\BankAccount::class,
 			\Polevaultweb\FreeAgent\BankTransaction::OBJECT_NAME => \Polevaultweb\FreeAgent\BankTransaction::class,
 			\Polevaultweb\FreeAgent\BankTransactionExplanation::OBJECT_NAME => \Polevaultweb\FreeAgent\BankTransactionExplanation::class,
@@ -58,7 +59,7 @@ abstract class Util
 		} elseif (is_array($resp)) {
 			if ( isset( $resp['object'] ) && is_string( $resp['object'] ) && isset( $types[ $resp['object'] ] ) ) {
 				$class = $types[ $resp['object'] ];
-			} else if ( ! empty( $object ) ) {
+			} else if ( ! empty( $object ) && isset( $types[ $object ]  ) ) {
 				$class = $types[ $object ];
 			} else {
 				$class = \Polevaultweb\FreeAgent\FreeAgentObject::class;
